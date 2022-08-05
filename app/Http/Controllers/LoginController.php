@@ -67,7 +67,8 @@ class LoginController extends Controller
 
         return $this->user->create($data) ? response()->json([
             'status' => 'success',
-            'message' => 'Registration Successful'
+            'message' => 'Registration Successful',
+            'data' => $this->user
         ]) : response()->json([
             'status' => 'error',
             'message' => 'Registration Failed'
