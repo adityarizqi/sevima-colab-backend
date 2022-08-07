@@ -31,13 +31,13 @@ class AuthController extends Controller
         if (Hash::check($request->password, $user->password)) {
             $user->generateAndSaveApiAuthToken();
             return response()->json([
-                'status' => 'success',
+                'status_code' => 200,
                 'message' => 'Login Successful',
                 'data' => $user
             ]);
         } else {
             return response()->json([
-                'status' => 'error',
+                'status_code' => 400,
                 'message' => 'Email or Password is incorrect'
             ]);
         }
@@ -47,7 +47,7 @@ class AuthController extends Controller
     {
         if ($this->user->where('email', $request->email)->first()) {
             return response()->json([
-                'status' => 'error',
+                'status_code' => 400,
                 'message' => 'Email already exists'
             ]);
         }
@@ -63,12 +63,12 @@ class AuthController extends Controller
         if ($user) {
             event(new Registered($user));
             return response()->json([
-                'status' => 'success',
+                'status_code' => 200,
                 'message' => 'Registration Successful, please check your email for verification',
             ]);
         } else {
             return response()->json([
-                'status' => 'error',
+                'status_code' => 400,
                 'message' => 'Registration Failed, please try again',
             ]);
         }
@@ -76,12 +76,12 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $user = User::where('api_token', str_replace('Bearer ','',$request->header('Authorization')))->first();
+        $user = User::where('api_token', str_replace('Bearer ', '', $request->header('Authorization')))->first();
         return $user->update(['api_token' => null]) ? response()->json([
-            'status' => 'success',
+            'status' => 200,
             'message' => 'Logout Successful'
         ]) : response()->json([
-            'status' => 'error',
+            'status' => 400,
             'message' => 'Logout Failed'
         ]);
     }
