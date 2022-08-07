@@ -23,7 +23,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ])->fails()) {
-            return ['status' => 'error', 'message' => 'Invalid Parameters'];
+            return ['status' => 400, 'message' => 'Invalid Parameters'];
         }
 
         $user = $this->user->where('email', $request->email)->first();
