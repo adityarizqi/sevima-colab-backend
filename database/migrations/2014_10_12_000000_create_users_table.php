@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('type')->default('user');
             $table->string('password');
             $table->text('payload')->nullable();
+            $table->string('api_token')->nullable();
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
