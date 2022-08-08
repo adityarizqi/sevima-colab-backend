@@ -21,11 +21,13 @@ class DatabaseSeeder extends Seeder
             'permissions' => json_encode([
                 'users' => [
                     'create' => true,
+                    'read' => true,
                     'update' => true,
                     'delete' => true,
                 ],
                 'roles' => [
                     'create' => true,
+                    'read' => true,
                     'update' => true,
                     'delete' => true,
                 ],
@@ -37,16 +39,19 @@ class DatabaseSeeder extends Seeder
             'permissions' => json_encode([
                 'employees' => [
                     'create' => true,
+                    'read' => true,
                     'update' => true,
                     'delete' => true,
                 ],
                 'roles' => [
                     'create' => true,
+                    'read' => true,
                     'update' => true,
                     'delete' => true,
                 ],
                 'students' => [
                     'create' => true,
+                    'read' => true,
                     'update' => true,
                     'delete' => true,
                 ]
