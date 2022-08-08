@@ -24,12 +24,9 @@ class AuthController extends Controller
             'password' => 'required',
         ])->fails()) {
             return response()->json([
+                'status' => 'error',
                 'message' => 'Invalid Parameter',
-                'errors' => Validator::make($request->all(), [
-                    'email' => 'required|email',
-                    'password' => 'required',
-                ])->errors(),
-            ], 422);
+            ], 400);
         }
 
         $user = $this->user->where('email', $request->email)->first();
@@ -51,6 +48,16 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if (Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ])->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid Parameter',
+            ], 400);
+        }
+
         if ($this->user->where('email', $request->email)->first()) {
             return response()->json([
                 'status' => 'error',
