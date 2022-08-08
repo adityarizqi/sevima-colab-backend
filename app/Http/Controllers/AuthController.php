@@ -23,7 +23,13 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ])->fails()) {
-            return ['status' => 400, 'message' => 'Invalid Parameters'];
+            return response()->json([
+                'message' => 'Invalid Parameter',
+                'errors' => Validator::make($request->all(), [
+                    'email' => 'required|email',
+                    'password' => 'required',
+                ])->errors(),
+            ], 422);
         }
 
         $user = $this->user->where('email', $request->email)->first();
@@ -31,15 +37,15 @@ class AuthController extends Controller
         if (Hash::check($request->password, $user->password)) {
             $user->generateAndSaveApiAuthToken();
             return response()->json([
-                'status_code' => 200,
+                'status' => 'success',
                 'message' => 'Login Successful',
                 'data' => $user
-            ]);
+            ], 200);
         } else {
             return response()->json([
-                'status_code' => 400,
+                'status' => 'error',
                 'message' => 'Email or Password is incorrect'
-            ]);
+            ], 400);
         }
     }
 
@@ -47,9 +53,9 @@ class AuthController extends Controller
     {
         if ($this->user->where('email', $request->email)->first()) {
             return response()->json([
-                'status_code' => 400,
+                'status' => 'error',
                 'message' => 'Email already exists'
-            ]);
+            ], 400);
         }
 
         $data = [
@@ -61,16 +67,16 @@ class AuthController extends Controller
         $user = $this->user->create($data);
 
         if ($user) {
-            event(new Registered($user));
+            // event(new Registered($user));
             return response()->json([
-                'status_code' => 200,
+                'status' => 'success',
                 'message' => 'Registration Successful, please check your email for verification',
-            ]);
+            ], 200);
         } else {
             return response()->json([
-                'status_code' => 400,
+                'status' => 'error',
                 'message' => 'Registration Failed, please try again',
-            ]);
+            ], 400);
         }
     }
 
@@ -78,11 +84,11 @@ class AuthController extends Controller
     {
         $user = User::where('api_token', str_replace('Bearer ', '', $request->header('Authorization')))->first();
         return $user->update(['api_token' => null]) ? response()->json([
-            'status' => 200,
+            'status' => 'success',
             'message' => 'Logout Successful'
-        ]) : response()->json([
-            'status' => 400,
+        ], 200) : response()->json([
+            'status' => 'error',
             'message' => 'Logout Failed'
-        ]);
+        ], 400);
     }
 }

@@ -18,11 +18,10 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->string('type')->default('user');
+            $table->string('type')->default(2);
             $table->string('password');
             $table->text('payload')->nullable();
             $table->string('api_token')->nullable();
-            $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
