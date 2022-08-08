@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'post_login']);
+Route::post('/register', [AuthController::class, 'post_register']);
+
+Route::get('/login', function (){ return abort(404);});
+Route::get('/register', function (){ return abort(404);});
 
 Route::group(['middleware' => ['api_auth']], function () {
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('/get-permissions', [RoleController::class, 'get_permissions']);
+    Route::post('logout', [AuthController::class, 'post_logout']);
 });

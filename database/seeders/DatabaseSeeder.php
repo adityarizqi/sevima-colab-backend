@@ -16,9 +16,41 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\Role::create([
+            'name' => 'super_admin',
+            'permissions' => json_encode([
+                'users' => [
+                    'create' => true,
+                    'update' => true,
+                    'delete' => true,
+                ],
+                'roles' => [
+                    'create' => true,
+                    'update' => true,
+                    'delete' => true,
+                ],
+            ])
+        ]);
+
+        \App\Models\Role::create([
+            'name' => 'admin',
+            'permissions' => json_encode([
+                'employees' => [
+                    'create' => true,
+                    'update' => true,
+                    'delete' => true,
+                ],
+                'roles' => [
+                    'create' => true,
+                    'update' => true,
+                    'delete' => true,
+                ],
+                'students' => [
+                    'create' => true,
+                    'update' => true,
+                    'delete' => true,
+                ]
+            ])
+        ]);
     }
 }

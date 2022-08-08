@@ -24,8 +24,8 @@ class ApiAuth
             }
         }
         return response()->json([
-            'status_code' => 401,
+            'status' => 'error',
             'message' => 'Invalid Token'
-        ]);
+        ], 401);
     }
 }

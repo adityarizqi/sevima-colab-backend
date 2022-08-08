@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->string('type')->default(2);
+            $table->string('role_id')->default(2);
             $table->string('password');
             $table->text('payload')->nullable();
             $table->string('api_token')->nullable();

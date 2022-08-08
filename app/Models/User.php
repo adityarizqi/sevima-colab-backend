@@ -22,5 +22,21 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-}
 
+    public function getAuthToken($request)
+    {
+        return str_replace('Bearer ', '', $request->header('Authorization'));
+    }
+
+    public function getAuthUser($request)
+    {
+        return $this->where('api_token', $this->getAuthToken($request))->first();
+    }
+
+    public function getPermissions($key)
+    {
+        $role = Role::find($this->role_id);
+        $permissions = json_decode($role->permissions, true);
+        return isset($permissions[$key]) ? $permissions[$key] : null;
+    }
+}

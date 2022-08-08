@@ -17,7 +17,7 @@ class AuthController extends Controller
         $this->user = $user;
     }
 
-    public function login(Request $request)
+    public function post_login(Request $request)
     {
         if (Validator::make($request->all(), [
             'email' => 'required|email',
@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         $user = $this->user->where('email', $request->email)->first();
 
-        if (Hash::check($request->password, $user->password)) {
+        if ($user && Hash::check($request->password, $user->password)) {
             $user->generateAndSaveApiAuthToken();
             return response()->json([
                 'status' => 'success',
@@ -46,7 +46,7 @@ class AuthController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function post_register(Request $request)
     {
         if (Validator::make($request->all(), [
             'email' => 'required|email',
@@ -87,9 +87,9 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function post_logout(Request $request)
     {
-        $user = User::where('api_token', str_replace('Bearer ', '', $request->header('Authorization')))->first();
+        $user = $this->user->getAuthUser($request);
         return $user->update(['api_token' => null]) ? response()->json([
             'status' => 'success',
             'message' => 'Logout Successful'
